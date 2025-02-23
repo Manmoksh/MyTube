@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: "MyTube",
   description:
     "MyTube is learning project to show case my next js skills it is a clone of youtube developed with the guide of codewithantonio",
-  icons: { icon: "/logo.png" },
+  icons: { icon: "/logo.svg" },
 };
 
 export default function RootLayout({
