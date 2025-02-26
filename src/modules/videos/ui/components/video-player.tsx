@@ -7,6 +7,11 @@ interface VideoPlayerProps {
   autoPlay?: boolean;
   onPlay?: () => void;
 }
+export const VideoPlayerSkeleton = () => {
+  return (
+    <div className="aspect-video bg-zinc-400 rounded-xl animate-pulse"></div>
+  );
+};
 export const VideoPlayer = ({
   playbackId,
   autoPlay,
