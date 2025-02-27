@@ -9,6 +9,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { UserAvatar } from "@/components/user-avatar";
 import { commentInsertSchema } from "@/db/schema";
+import { cn } from "@/lib/utils";
 import { trpc } from "@/trpc/client";
 import { useClerk, useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,15 +19,25 @@ import { z } from "zod";
 
 interface CommentFormProps {
   videoId: string;
+  parentId?: string;
   onSuccess?: () => void;
+  onCancel?: () => void;
+  variant?: "comment" | "reply";
 }
-export const CommentForm = ({ videoId, onSuccess }: CommentFormProps) => {
+export const CommentForm = ({
+  videoId,
+  parentId,
+  onSuccess,
+  onCancel,
+  variant = "comment",
+}: CommentFormProps) => {
   const { user } = useUser();
   const clerk = useClerk();
   const utils = trpc.useUtils();
   const create = trpc.comments.create.useMutation({
     onSuccess: () => {
       utils.comments.getMany.invalidate({ videoId });
+      utils.comments.getMany.invalidate({ videoId, parentId });
       form.reset();
       toast.success("comment added");
       onSuccess?.();
@@ -44,7 +55,8 @@ export const CommentForm = ({ videoId, onSuccess }: CommentFormProps) => {
     resolver: zodResolver(commentInsertSchema.omit({ userId: true })),
 
     defaultValues: {
-      videoId,
+      parentId: parentId,
+      videoId: videoId,
       value: "",
     },
   });
@@ -52,6 +64,10 @@ export const CommentForm = ({ videoId, onSuccess }: CommentFormProps) => {
     values: Omit<z.infer<typeof commentInsertSchema>, "userId">
   ) => {
     create.mutate(values);
+  };
+  const handleCancel = () => {
+    form.reset();
+    onCancel?.();
   };
   return (
     <Form {...form}>
@@ -62,6 +78,7 @@ export const CommentForm = ({ videoId, onSuccess }: CommentFormProps) => {
         <UserAvatar
           imageUrl={user?.imageUrl || "/user-placeholder.svg"}
           name={user?.username || "User"}
+          size={variant === "reply" ? "sm" : "default"}
         />
         <div className="flex-1">
           <FormField
@@ -72,7 +89,11 @@ export const CommentForm = ({ videoId, onSuccess }: CommentFormProps) => {
                 <FormControl>
                   <Textarea
                     {...field}
-                    placeholder="Add a comment"
+                    placeholder={
+                      variant === "comment"
+                        ? "Add a comment..."
+                        : "Reply to this comment..."
+                    }
                     className="resize-none bg-transparent overflow-hidden min-h-0"
                   />
                 </FormControl>
@@ -81,8 +102,13 @@ export const CommentForm = ({ videoId, onSuccess }: CommentFormProps) => {
             )}
           />
           <div className="justify-end gap-2 mt-2 flex">
+            {onCancel && (
+              <Button variant="ghost" type="button" onClick={handleCancel}>
+                Cancel
+              </Button>
+            )}
             <Button type="submit" size="sm" disabled={create.isPending}>
-              Comment
+              {variant === "reply" ? "Reply" : "Comment"}
             </Button>
           </div>
         </div>
