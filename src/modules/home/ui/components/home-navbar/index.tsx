@@ -8,7 +8,7 @@ export const HomeNavbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 bg-white flex px-2 items-center h-16 pr-5 z-50">
       <div className="flex items-center gap-4 w-full">
-        <div className="flex itece flex-shrink-0">
+        <div className="flex items-center flex-shrink-0">
           <SidebarTrigger />
           <Link prefetch href="/" className="hidden md:block">
             <div className="flex p-4 items-center gap-1">
