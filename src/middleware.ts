@@ -4,7 +4,7 @@ const isProtectedRoute = createRouteMatcher([
   "/studio(.*)",
   "/subscriptions",
   "/feed/subscriptions",
-  "/playlists.(*)",
+  "/playlists(.*)",
 ]);
 export default clerkMiddleware(async (auth, req) => {
   if (isProtectedRoute(req)) await auth.protect();
