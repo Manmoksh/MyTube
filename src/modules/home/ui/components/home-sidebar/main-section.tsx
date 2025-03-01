@@ -11,6 +11,7 @@ import { useAuth } from "@clerk/clerk-react";
 import { useClerk } from "@clerk/nextjs";
 import { FlameIcon, HomeIcon, PlaySquareIcon } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const items = [
   { title: "Home", url: "/", icon: HomeIcon },
@@ -25,6 +26,7 @@ const items = [
 export const MainSection = () => {
   const clerk = useClerk();
   const { isSignedIn } = useAuth();
+  const pathName = usePathname();
   return (
     <SidebarGroup>
       <SidebarGroupContent>
@@ -34,7 +36,7 @@ export const MainSection = () => {
               <SidebarMenuButton
                 tooltip={item.title}
                 asChild
-                isActive={false}
+                isActive={pathName === item.url}
                 onClick={(e) => {
                   if (!isSignedIn && item.auth) {
                     e.preventDefault();
@@ -42,7 +44,11 @@ export const MainSection = () => {
                   }
                 }}
               >
-                <Link href={item.url} className="flex items-center gap-4 ">
+                <Link
+                  prefetch
+                  href={item.url}
+                  className="flex items-center gap-4 "
+                >
                   <item.icon />
                   <span className="text-sm">{item.title}</span>
                 </Link>

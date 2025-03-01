@@ -1,4 +1,3 @@
-import { Avatar } from "@/components/ui/avatar";
 import {
   SidebarHeader,
   SidebarMenuButton,
@@ -9,7 +8,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { UserAvatar } from "@/components/user-avatar";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
-import React from "react";
 
 export const StudioSidebarHeader = () => {
   const { user } = useUser();
@@ -29,7 +27,7 @@ export const StudioSidebarHeader = () => {
     return (
       <SidebarMenuItem>
         <SidebarMenuButton tooltip="Your Profile" asChild>
-          <Link href="/users/current">
+          <Link prefetch href="/users/current">
             <UserAvatar
               imageUrl={user.imageUrl}
               name={user.fullName ?? "User"}
@@ -43,7 +41,7 @@ export const StudioSidebarHeader = () => {
   }
   return (
     <SidebarHeader className="flex items-center justify-center pb-4 ">
-      <Link href="/users/current">
+      <Link prefetch href="/users/current">
         <UserAvatar
           imageUrl={user?.imageUrl}
           name={user?.fullName ?? "User"}

@@ -1,32 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { trpc } from "@/trpc/client";
-import {
-  CopyCheck,
-  CopyIcon,
-  Globe2Icon,
-  ImagePlusIcon,
-  Loader2Icon,
-  LockIcon,
-  MoreVerticalIcon,
-  RotateCcwIcon,
-  SparkleIcon,
-  SparklesIcon,
-  TrashIcon,
-} from "lucide-react";
-import { Suspense, useState } from "react";
-import { ErrorBoundary } from "react-error-boundary";
-import { useForm } from "react-hook-form";
-import { videoUpdateSchema } from "@/db/schema";
 import {
   Form,
   FormControl,
@@ -36,7 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -44,16 +23,36 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast } from "sonner";
-import { VideoPlayer } from "@/modules/videos/ui/components/video-player";
-import Link from "next/link";
-import { snakeCaseTotitle } from "@/lib/utils";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { THUMBNAIL_FALLBACK } from "@/modules/videos/constants";
-import { ThumbnailUploadModal } from "../components/thumbnail-upload-modal";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
 import { APP_URL } from "@/constants";
+import { videoUpdateSchema } from "@/db/schema";
+import { snakeCaseTotitle } from "@/lib/utils";
+import { THUMBNAIL_FALLBACK } from "@/modules/videos/constants";
+import { VideoPlayer } from "@/modules/videos/ui/components/video-player";
+import { trpc } from "@/trpc/client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  CopyCheck,
+  CopyIcon,
+  Globe2Icon,
+  ImagePlusIcon,
+  Loader2Icon,
+  LockIcon,
+  MoreVerticalIcon,
+  RotateCcwIcon,
+  SparklesIcon,
+  TrashIcon,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+import { ThumbnailUploadModal } from "../components/thumbnail-upload-modal";
 
 interface PageProps {
   videoId: string;
@@ -215,7 +214,7 @@ const FormSectionSuspense = ({ videoId }: PageProps) => {
     update.mutate(data);
   };
 
-  const fullUrl = `${APP_URL || "http://localhost:3000"}/videos/${videoId}`;
+  const fullUrl = `${APP_URL}/videos/${videoId}`;
   const [isCopied, setIsCopied] = useState(false);
   const onCopy = async () => {
     await navigator.clipboard.writeText(fullUrl);
@@ -440,7 +439,7 @@ const FormSectionSuspense = ({ videoId }: PageProps) => {
                         Video Link
                       </p>
                       <div className="flex items-center gap-x-2">
-                        <Link href={`/videos/${video.id}`}>
+                        <Link prefetch href={`/videos/${video.id}`}>
                           <p className="line-clamp-1 text-sm text-blue-500">
                             {fullUrl}
                           </p>

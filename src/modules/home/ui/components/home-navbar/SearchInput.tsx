@@ -1,21 +1,31 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { APP_URL } from "@/constants";
 import { SearchIcon, XIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
 export const SearchInput = () => {
+  return (
+    <Suspense fallback={<Skeleton className="h-10 w-full" />}>
+      <SearchInputSuspense />
+    </Suspense>
+  );
+};
+const SearchInputSuspense = () => {
   const router = useRouter();
-  const [value, setValue] = useState("");
+  const searchParams = useSearchParams();
+  const query = searchParams.get("query") || "";
+  const categoryId = searchParams.get("categoryId") || "";
+  const [value, setValue] = useState(query);
   const handlesearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const url = new URL(
-      "/search",
-      APP_URL ? `https:${APP_URL}` : "http://localhost:3000"
-    );
+    const url = new URL("/search", APP_URL);
     const newQuery = value.trim();
     url.searchParams.set("query", encodeURIComponent(newQuery));
+    if (categoryId) {
+      url.searchParams.set("categoryId", categoryId);
+    }
     if (newQuery === "") {
       url.searchParams.delete("query");
     }

@@ -1,19 +1,18 @@
 "use client";
 
+import { InfiniteScroll } from "@/components/infinite-scroll";
 import { DEFAULT_LIMIT } from "@/constants";
-import { videos } from "@/db/schema";
 import { trpc } from "@/trpc/client";
-import {
-  VideoRowCard,
-  VideoRowCardskeleton,
-} from "../components/video-row-card";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import {
   VideoGridCard,
   VideoGridCardskeleton,
 } from "../components/video-grid-card";
-import { InfiniteScroll } from "@/components/infinite-scroll";
-import { Suspense } from "react";
-import { ErrorBoundary } from "react-error-boundary";
+import {
+  VideoRowCard,
+  VideoRowCardskeleton,
+} from "../components/video-row-card";
 interface SuggestionSectionProps {
   videoId: string;
   isManual?: boolean;

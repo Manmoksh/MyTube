@@ -11,20 +11,32 @@ import {
 import { useAuth, useClerk } from "@clerk/nextjs";
 import { HistoryIcon, ListVideoIcon, ThumbsUpIcon } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const items = [
-  { title: "History", url: "/playlist/history", icon: HistoryIcon, auth: true },
+  {
+    title: "History",
+    url: "/playlists/history",
+    icon: HistoryIcon,
+    auth: true,
+  },
   {
     title: "Liked Videos",
-    url: "/playlist/liked",
+    url: "/playlists/liked",
     icon: ThumbsUpIcon,
     auth: true,
   },
-  { title: "All Playlists", url: "/playlist", icon: ListVideoIcon, auth: true },
+  {
+    title: "All Playlists",
+    url: "/playlists",
+    icon: ListVideoIcon,
+    auth: true,
+  },
 ];
 export const PersonalSection = () => {
   const { isSignedIn } = useAuth();
   const clerk = useClerk();
+  const pathName = usePathname();
   return (
     <SidebarGroup>
       <SidebarGroupLabel>You</SidebarGroupLabel>
@@ -35,7 +47,7 @@ export const PersonalSection = () => {
               <SidebarMenuButton
                 tooltip={item.title}
                 asChild
-                isActive={false}
+                isActive={pathName === item.url}
                 onClick={(e) => {
                   if (!isSignedIn && item.auth) {
                     e.preventDefault();
@@ -43,7 +55,11 @@ export const PersonalSection = () => {
                   }
                 }}
               >
-                <Link href={item.url} className="flex items-center gap-4 ">
+                <Link
+                  prefetch
+                  href={item.url}
+                  className="flex items-center gap-4 "
+                >
                   <item.icon />
                   <span className="text-sm">{item.title}</span>
                 </Link>

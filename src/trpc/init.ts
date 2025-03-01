@@ -1,13 +1,11 @@
 import { db } from "@/db";
 import { users } from "@/db/schema";
+import { rateLimit } from "@/lib/ratelimit";
 import { auth } from "@clerk/nextjs/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 import { cache } from "react";
 import superjson from "superjson";
-import { Redis } from "@upstash/redis";
-import { Ratelimit } from "@upstash/ratelimit";
-import { rateLimit } from "@/lib/ratelimit";
 export const createTRPCContext = cache(async () => {
   const { userId } = await auth();
   return { clerkUserId: userId };

@@ -9,7 +9,6 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { UserAvatar } from "@/components/user-avatar";
 import { commentInsertSchema } from "@/db/schema";
-import { cn } from "@/lib/utils";
 import { trpc } from "@/trpc/client";
 import { useClerk, useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -78,7 +77,7 @@ export const CommentForm = ({
         <UserAvatar
           imageUrl={user?.imageUrl || "/user-placeholder.svg"}
           name={user?.username || "User"}
-          size={variant === "reply" ? "sm" : "default"}
+          size={"default"}
         />
         <div className="flex-1">
           <FormField

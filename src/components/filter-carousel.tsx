@@ -1,5 +1,3 @@
-"use client";
-
 import { cn } from "@/lib/utils";
 import { Badge } from "./ui/badge";
 import {
@@ -40,7 +38,7 @@ export const FilterCrousel = ({
     });
   }, [api]);
   return (
-    <div className="relative w-full">
+    <div className="relative w-full select-none">
       {/* left fade */}
 
       {api && current > 1 && (

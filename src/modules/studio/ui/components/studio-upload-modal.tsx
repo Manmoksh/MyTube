@@ -3,10 +3,9 @@ import { ResponsiveModal } from "@/components/responsive-dialog";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/trpc/client";
 import { Loader2Icon, PlusIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { StudioUploader } from "./studio-uploader";
-import MuxUploader from "@mux/mux-uploader-react";
-import { useRouter } from "next/navigation";
 
 export const StudioUploadModal = () => {
   const router = useRouter();
@@ -22,7 +21,8 @@ export const StudioUploadModal = () => {
   });
   const onSuccess = () => {
     if (!create.data?.video.id) return;
-    create.reset(), router.push(`/studio/videos/${create.data.video.id}`);
+    create.reset();
+    router.push(`/studio/videos/${create.data.video.id}`);
   };
   return (
     <>
