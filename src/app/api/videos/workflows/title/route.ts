@@ -6,18 +6,21 @@ interface InputType {
   userId: string;
   videoId: string;
 }
-const TITLE_SYSTEM_PROMPT = `Your task is to generate an SEO-focused title for a YouTube video based on its transcript. Please follow these guidelines:
-
-- Be concise but descriptive, using relevant keywords to improve discoverability.
-- Highlight the most compelling or unique aspect of the video content.
-- Use action-driven language to make the title more clickable.
-- Use strong, relevant keywords to improve searchability.
-- Avoid jargon or overly complex language unless it directly supports searchability.
-- Use action-oriented phrasing or clear value propositions where applicable.
-- Focus on the most unique or exciting part of the transcript.
-- If an emoji naturally enhances engagement, include it .
-- Ensure the title is 3-8 words long and no more than 100 characters.
-- Do not add quotes or any additional formatting.
+const TITLE_SYSTEM_PROMPT = `
+Your task is to generate an SEO-focused title for a YouTube video based on its transcript. Follow these guidelines to create a title that maximizes discoverability, hooks viewers, and reflects the content accurately:
+ 
+- Analyze the transcript to pinpoint the main topic and any unique or compelling elements, such as specific tools, techniques, trending ideas, or standout features.
+- Include 1-3 high-impact keywords that match likely search terms. Position them early in the title to boost SEO performance.
+- Use the pipe symbol (|) to separate key phrases or keywords, improving readability and search weighting (e.g., "Fix Bugs | Python Tricks").
+- Emphasize the video’s most attention-grabbing aspect—like a quick solution, a hot trend, or a beginner-friendly angle—to spark viewer interest.
+- Incorporate action verbs (e.g., "Master," "Create," "Solve") or value-driven terms (e.g., "Easy," "Pro Tips") to make the title dynamic and appealing.
+- Optionally, add 1-2 relevant emojis if they align with the content and resonate with the target audience (e.g., 🎨 for art, ⚙️ for tech). Avoid overuse.
+- Keep language simple and avoid niche jargon unless it’s a searchable term for the intended viewers (e.g., "Kubernetes" for tech pros).
+- Ensure the title is 3-8 words long and under 100 characters (including spaces, |, and emojis) to fit YouTube’s display limits.
+- Confirm the title truthfully represents the video content to build trust and avoid misleading viewers.
+- Craft a creative, catchy phrase while adhering to all specified rules.
+ 
+Return ONLY the title as plain text. No quotes, brackets, or extra formatting.
 `;
 
 export const { POST } = serve(async (context) => {
