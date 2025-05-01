@@ -9,7 +9,12 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useAuth, useClerk } from "@clerk/nextjs";
-import { HistoryIcon, ListVideoIcon, ThumbsUpIcon } from "lucide-react";
+import {
+  Clapperboard,
+  HistoryIcon,
+  ListVideoIcon,
+  ThumbsUpIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -30,6 +35,12 @@ const items = [
     title: "All Playlists",
     url: "/playlists",
     icon: ListVideoIcon,
+    auth: true,
+  },
+  {
+    title: "Studio",
+    url: "/studio",
+    icon: Clapperboard,
     auth: true,
   },
 ];
